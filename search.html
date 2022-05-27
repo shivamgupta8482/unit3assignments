@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+
+    #container{
+        width: 300px;
+        height: 200px;
+        border: 1px solid red;
+        overflow: scroll;
+    }
+</style>
+<body>
+    <input type="text" oninput="debounceFunction(main,200)" id="shiv">
+    <div id="container"></div>
+</body>
+</html>
+<script>
+    let id;
+      
+  async function shivam(q){
+
+    try{
+       
+       
+       const url=`https://www.omdbapi.com/?s=${q}&apikey=5a3e944e`;
+
+       let res = await fetch(url);
+
+       let users = await res.json();
+      
+      return users.Search;
+    }catch(err){
+        console.log(err);
+    }
+       
+
+       // console.log(users.Search);
+    }
+
+    function append(x){
+
+        let div = document.querySelector("#container");
+        div.innerHTML="";
+         if(x==undefined){
+             return false;
+         }
+        x.forEach(function(arr){
+       
+        let p = document.createElement("p");
+        p.innerText=arr.Title;
+
+        div.append(p);
+        });
+    }
+    async function main(){
+        let xy = document.querySelector("#shiv").value;
+        let response = shivam(xy);
+        let data = await response;
+        append(data);
+    }
+    function debounceFunction(func,delay){
+        if(id){
+            clearTimeout(id);
+        }
+        id = setTimeout(function(){
+func();
+        },delay);
+    }
+
+</script>
